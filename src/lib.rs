@@ -4,7 +4,7 @@ use std::process::exit;
 use std::str::FromStr;
 use std::time::{Duration, Instant};
 
-pub fn run(days: [[fn(String); 2]; 25]) {
+pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
     let args: Vec<String> = args().collect();
     if args.len() < 2 {
         print_usage(&args[0]);
@@ -23,7 +23,7 @@ pub fn run(days: [[fn(String); 2]; 25]) {
     let mut text: String;
     if args.len() > 2 && args[2] == "real" {
         let mut aoc = libaoc::AocClient::new_from_env();
-        text = aoc.get_input(2023, day).unwrap_or_else(|_| {
+        text = aoc.get_input(year, day).unwrap_or_else(|_| {
             eprintln!("failed to retrieve input text");
             exit(2);
         });
