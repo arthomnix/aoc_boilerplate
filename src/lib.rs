@@ -46,7 +46,7 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
             })
         }
     } else {
-        println!("Enter your puzzle input, ending with Ctrl-D (EOF): (use 'aoc23 <day>:<part> real' to automatically download your real data)");
+        println!("Enter your puzzle input, ending with Ctrl-D (EOF): (use '{} <day>:<part> [real|example]' to automatically download your real/example data)", &args[0]);
         let mut text = String::new();
         std::io::stdin()
             .read_to_string(&mut text)
