@@ -20,21 +20,31 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
         print_usage(&args[0]);
     }
 
-    let mut text: String;
-    if args.len() > 2 && args[2] == "real" {
+    let text = if args.len() > 2 && (args[2] == "real" || args[2] == "example") {
         let mut aoc = libaoc::AocClient::new_from_env();
-        text = aoc.get_input(year, day).unwrap_or_else(|_| {
-            eprintln!("failed to retrieve input text");
-            exit(2);
-        });
+        if args[2] == "example" {
+            aoc.get_example(year, day).unwrap_or_else(|_| {
+                eprintln!("failed to retrieve example input");
+                exit(2);
+            }).unwrap_or_else(|_| {
+                eprintln!("failed to parse example input");
+                exit(2);
+            }).data
+        } else {
+            aoc.get_input(year, day).unwrap_or_else(|_| {
+                eprintln!("failed to retrieve input text");
+                exit(2);
+            })
+        }
     } else {
         println!("Enter your puzzle input, ending with Ctrl-D (EOF): (use 'aoc23 <day>:<part> real' to automatically download your real data)");
-        text = String::new();
+        let mut text = String::new();
         std::io::stdin()
             .read_to_string(&mut text)
             .expect("Failed to read input from stdin!");
         println!("\n");
-    }
+        text
+    };
 
     let before = Instant::now();
     days[day as usize - 1][part as usize - 1](text);
@@ -56,6 +66,7 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
 }
 
 fn print_usage(bin_name: &str) -> ! {
-    eprintln!("Usage: {bin_name} <day>:<part> [real]");
+    eprintln!("Usage: {bin_name} <day>:<part> [real|example]");
+    eprintln!("The real/example options require you to provide your Advent of Code session token in the AOC_SESSION environment variable.");
     exit(1);
 }
