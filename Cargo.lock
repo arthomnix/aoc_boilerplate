@@ -520,8 +520,8 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libaoc"
-version = "0.4.0"
-source = "git+https://github.com/arthomnix/libaoc#d6f89de8a3e15eb8d3e17eb7725564ef2620ba2d"
+version = "0.5.0"
+source = "git+https://github.com/arthomnix/libaoc#9672270772386ba28880e8c3d2346c12448e2f5f"
 dependencies = [
  "dirs",
  "reqwest",

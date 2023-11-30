@@ -23,13 +23,22 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
     let text = if args.len() > 2 && (args[2] == "real" || args[2] == "example") {
         let mut aoc = libaoc::AocClient::new_from_env();
         if args[2] == "example" {
-            aoc.get_example(year, day).unwrap_or_else(|_| {
+            let example = aoc.get_example(year, day, part).unwrap_or_else(|_| {
                 eprintln!("failed to retrieve example input");
                 exit(2);
             }).unwrap_or_else(|_| {
                 eprintln!("failed to parse example input");
                 exit(2);
-            }).data
+            });
+            let expected_answer = if part == 2 {
+                example.part2_answer
+            } else {
+                Some(example.part1_answer)
+            };
+            if let Some(answer) = expected_answer {
+                println!("Expected answer (parsed from HTML, may be wrong!): {answer}");
+            }
+            example.data
         } else {
             aoc.get_input(year, day).unwrap_or_else(|_| {
                 eprintln!("failed to retrieve input text");
