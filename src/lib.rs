@@ -38,7 +38,12 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
             if let Some(answer) = expected_answer {
                 println!("Expected answer (parsed from HTML, may be wrong!): {answer}");
             }
-            example.data
+
+            if part == 2 && example.part2_answer.is_some() {
+                example.part2_answer.unwrap()
+            } else {
+                example.data
+            }
         } else {
             aoc.get_input(year, day).unwrap_or_else(|_| {
                 eprintln!("failed to retrieve input text");
