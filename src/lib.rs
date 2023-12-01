@@ -39,8 +39,8 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
                 println!("Expected answer (parsed from HTML, may be wrong!): {answer}");
             }
 
-            if part == 2 && example.part2_answer.is_some() {
-                example.part2_answer.unwrap()
+            if part == 2 {
+                example.part2_answer.unwrap_or(example.data)
             } else {
                 example.data
             }
