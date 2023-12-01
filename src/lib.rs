@@ -26,7 +26,7 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
             let example = aoc.get_example(year, day, part).unwrap_or_else(|_| {
                 eprintln!("failed to retrieve example input");
                 exit(2);
-            }).unwrap_or_else(|_| {
+            }).unwrap_or_else(|| {
                 eprintln!("failed to parse example input");
                 exit(2);
             });
