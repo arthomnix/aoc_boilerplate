@@ -65,9 +65,9 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
     let time = Instant::now().duration_since(before);
 
     let formatted_time = match time.as_nanos() {
-        ..=10 => format!("Completed in {:.3}ns", time.as_secs_f64() / 1000000000.0),
-        11..=10000 => format!("Completed in {:.3}us", time.as_secs_f64() / 1000000.0),
-        10001..=10000000 => format!("Completed in {:.3}ms", time.as_secs_f64() / 1000.0),
+        ..=10000 => format!("Completed in {:.3}ns", time.as_secs_f64() / 1000000000.0),
+        10001..=10000000 => format!("Completed in {:.3}us", time.as_secs_f64() / 1000000.0),
+        10000001..=10000000000 => format!("Completed in {:.3}ms", time.as_secs_f64() / 1000.0),
         _ => format!("Completed in {:.3}s", time.as_secs_f64()),
 
     };
