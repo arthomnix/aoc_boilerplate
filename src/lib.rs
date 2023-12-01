@@ -40,7 +40,7 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
             }
 
             if part == 2 {
-                example.part2_answer.unwrap_or(example.data)
+                example.part2_data.unwrap_or(example.data)
             } else {
                 example.data
             }
