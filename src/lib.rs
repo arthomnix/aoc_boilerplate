@@ -30,10 +30,11 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
                 eprintln!("failed to parse example input");
                 exit(2);
             });
+
             let expected_answer = if part == 2 {
                 example.part2_answer
             } else {
-                Some(example.part1_answer)
+                example.part1_answer
             };
             if let Some(answer) = expected_answer {
                 println!("Expected answer (parsed from HTML, may be wrong!): {answer}");
