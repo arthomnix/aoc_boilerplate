@@ -89,7 +89,7 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
         let max_duration = times.iter().max().unwrap();
 
         println!(
-            "{benchmark_runs} runs: mean = {time:?}; min = {min_duration:?}; max = {max_duration:?}){}",
+            "{benchmark_runs} runs: mean = {time:?}; min = {min_duration:?}; max = {max_duration:?}{}",
              if cfg!(debug_assertions) { " (debug build)" } else { "" },
         );
     }
