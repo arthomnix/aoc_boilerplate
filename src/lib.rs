@@ -85,17 +85,11 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
             if cfg!(debug_assertions) { " (debug build)" } else { "" },
         );
     } else {
-        let sd = times.iter().map(|t| {
-            let t = t.as_nanos() as i128;
-            let mean = time.as_nanos() as i128;
-            (t - mean).pow(2) as u64
-        }).sum::<u64>() / (times.len() - 1) as u64;
-        let sd_duration = Duration::from_nanos(sd);
         let min_duration = times.iter().min().unwrap();
         let max_duration = times.iter().max().unwrap();
 
         println!(
-            "Completed in {time:?} ({benchmark_runs} runs; s = {sd_duration:?}; min = {min_duration:?}; max = {max_duration:?}){}",
+            "Completed in {time:?} ({benchmark_runs} runs; min = {min_duration:?}; max = {max_duration:?}){}",
              if cfg!(debug_assertions) { " (debug build)" } else { "" },
         );
     }
