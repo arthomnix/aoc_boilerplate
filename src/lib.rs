@@ -2,7 +2,7 @@ use std::env::args;
 use std::io::Read;
 use std::process::exit;
 use std::str::FromStr;
-use std::time::Instant;
+use std::time::{Duration, Instant};
 
 pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
     let args: Vec<String> = args().collect();
@@ -61,27 +61,44 @@ pub fn run(year: i32, days: [[fn(String); 2]; 25]) {
         text
     };
 
-    let before = Instant::now();
-    days[day as usize - 1][part as usize - 1](text);
-    let time = Instant::now().duration_since(before);
+    let benchmark_runs = std::env::var("AOC_BENCH_RUNS")
+        .map(|x| x.parse::<i32>())
+        .into_iter()
+        .flatten()
+        .next()
+        .unwrap_or(1);
 
-    let formatted_time = match time.as_nanos() {
-        ..=10000 => format!("Completed in {:.3}ns", time.as_secs_f64() * 1000000000.0),
-        10001..=10000000 => format!("Completed in {:.3}us", time.as_secs_f64() * 1000000.0),
-        10000001..=10000000000 => format!("Completed in {:.3}ms", time.as_secs_f64() * 1000.0),
-        _ => format!("Completed in {:.3}s", time.as_secs_f64()),
+    let times = (0..benchmark_runs)
+        .map(|_| {
+            let t = text.clone();
+            let before = Instant::now();
+            days[day as usize - 1][part as usize - 1](t);
+            before.elapsed()
+        })
+        .collect::<Vec<_>>();
 
-    };
+    let time = times.iter().sum::<Duration>() / times.len() as u32;
 
-    println!(
-        "{}{}",
-        formatted_time,
-        if cfg!(debug_assertions) {
-            " (debug build)"
-        } else {
-            ""
-        }
-    );
+    if benchmark_runs == 1 {
+        println!(
+            "Completed in {time:?}{}",
+            if cfg!(debug_assertions) { " (debug build)" } else { "" },
+        );
+    } else {
+        let sd = times.iter().map(|t| {
+            let t = t.as_nanos() as i128;
+            let mean = time.as_nanos() as i128;
+            (t - mean).pow(2) as u64
+        }).sum::<u64>() / (times.len() - 1) as u64;
+        let sd_duration = Duration::from_nanos(sd);
+        let min_duration = times.iter().min().unwrap();
+        let max_duration = times.iter().max().unwrap();
+
+        println!(
+            "Completed in {time:?} ({benchmark_runs} runs; s = {sd_duration:?}; min = {min_duration:?}; max = {max_duration:?}){}",
+             if cfg!(debug_assertions) { " (debug build)" } else { "" },
+        );
+    }
 }
 
 fn print_usage(bin_name: &str) -> ! {
